@@ -1,4 +1,6 @@
 import os
+import io
+import base64
 import torch
 from diffusers import DiffusionPipeline
 from flask import Flask, render_template, request
@@ -15,9 +17,13 @@ def generate_image():
 
         try:
             image = pipe(prompt).images[0] 
-            image.save("generated_image.png")
 
-            return render_template('index.html', filename="generated_image.png")
+            buffered = io.BytesIO()
+            image.save(buffered, format="PNG")
+            image_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
+            image_data_uri = f"data:image/png;base64,{image_base64}"
+
+            return render_template('index.html', image_url=image_data_uri)
 
         except Exception as e:
             return render_template('index.html', error=str(e))
