@@ -1,14 +1,16 @@
 import os
 import io
 import base64
-import torch
-from diffusers import DiffusionPipeline
+from langchain_together import Together
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-pipe = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
-pipe.to("cuda")  
+
+pipe = Together (
+    model="stabilityai/stable-diffusion-xl-base-1.0",
+    together_api_key="48515099b0ed4e22e56da54e50feb4adfaaa901a444b0c34bb33c66abe7b2c61"
+)
 
 @app.route('/', methods=['GET', 'POST'])
 def generate_image():
