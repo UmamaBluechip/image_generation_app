@@ -1,7 +1,6 @@
 import os
 import io
 import base64
-#from langchain_together import Together
 from diffusers import StableDiffusionPipeline
 import torch
 from flask import Flask, render_template, request
@@ -15,10 +14,6 @@ pipe = StableDiffusionPipeline.from_pretrained(model_id)
 pipe = pipe.to(device)
 pipe.enable_attention_slicing()
 
-#pipe = Together (
-#    model="stabilityai/stable-diffusion-xl-base-1.0",
-#    together_api_key="48515099b0ed4e22e56da54e50feb4adfaaa901a444b0c34bb33c66abe7b2c61"
-#)
 
 @app.route('/', methods=['GET', 'POST'])
 def generate_image():
